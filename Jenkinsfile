@@ -8,7 +8,7 @@ pipeline {
   stages {
     stage('Cloning Git') {
       steps {
-        git 'https://github.com/gustavoapolinario/microservices-node-example-todo-frontend.git'
+        git 'https://github.com/DannyDenver/kubernetes-ci-cd-pipeline'
       }
     }
     stage('Building image') {
