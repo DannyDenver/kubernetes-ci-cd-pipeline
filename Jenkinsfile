@@ -1,6 +1,7 @@
 pipeline {
   environment {
-    registry = "danman28/jenkins-pipeline"
+    registryGreen = "danman28/flask-app-green"
+    registryBlue = "danman/flask-app-blue"
     registryCredential = 'dockerhub'
     dockerImage = ''
   }
@@ -15,18 +16,9 @@ pipeline {
       steps {
         script {
           if (env.BUILD_NUMBER.toBigInteger().mod( 2 ) == 0 ) {
-            echo 'Even'
-
-            // sh '''
-            // kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/EKS-2QZXVNAP
-            // '''
+            echo 'Even Build'
             }else {
-              echo 'Odd'
-
-
-              // sh '''
-              // kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/EKS-2QZXVNAP
-              // '''
+              echo 'Odd Build'
             }
         }
       }
@@ -34,15 +26,26 @@ pipeline {
     stage('Building image') {
       steps{
         script {
-          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+          if (env.BUILD_NUMBER.toBigInteger().mod( 2 ) == 0 ) {
+           dockerImage = docker.build registryBlue + ":$BUILD_NUMBER"
+
+          }else {
+            dockerImage = docker.build registryGreen + ":$BUILD_NUMBER"
+          }
         }
       }
     }
     stage('Push Image') {
       steps{
         script {
-          docker.withRegistry( '', registryCredential ) {
-            dockerImage.push()
+          if (env.BUILD_NUMBER.toBigInteger().mod( 2 ) == 0 ) {
+            docker.withRegistry( '', registryCredential ) {
+              dockerImage.push()
+            }
+          }else {
+            docker.withRegistry( '', registryCredential ) {
+              dockerImage.push()
+            }
           }
         }
       }
@@ -50,31 +53,34 @@ pipeline {
     stage('set current kubectl context') {
       steps {
         script {
-          if (env.BUILD_NUMBER.mod( 2 ) == 0 ) {
-            echo 'Even'
-
-            // sh '''
-            // kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/EKS-2QZXVNAP
-            // '''
-            }else {
-              echo 'Odd'
-
-
-              // sh '''
-              // kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/EKS-2QZXVNAP
-              // '''
-            }
+             sh '''
+              kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/EKS-64N10C7B
+              '''
         }
       }
     }
-    stage('Deploy container') {
-        steps {
-            withAWS(region:'us-east-2', credentials: 'aws-access') {
-                sh '''
-                kubectl apply -f ./new-image-controller.json
-                '''
+
+    stage('Deploy replication controllers') {
+      steps {
+          if (env.BUILD_NUMBER.toBigInteger() > 1) {
+            sh '''
+              kubectl apply -f ./blue/blue-controller.json
+              kubectl apply -f ./green/green-controller.json
+              '''
+            }else {
+            sh '''
+              kubectl apply -f ./blue/blue-controller.json
+              '''
             }
-        }
+      }
+    }
+     
+    stage('Deploy load balancer servixe') {
+      steps {
+        sh '''
+        kubectl apply -f ./blue-green-service.json
+        '''
+      }
     }
 
     stage('Remove Unused docker image') {

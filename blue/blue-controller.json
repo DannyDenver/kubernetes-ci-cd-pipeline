@@ -2,27 +2,27 @@
     "kind":"ReplicationController",
     "apiVersion":"v1",
     "metadata":{
-       "name":"green",
+       "name":"blue",
        "labels":{
-          "app":"green"
+          "app":"blue"
        }
     },
     "spec":{
        "replicas":1,
        "selector":{
-          "app":"green"
+          "app":"blue"
        },
        "template":{
           "metadata":{
              "labels":{
-                "app":"green"
+                "app":"blue"
              }
           },
           "spec":{
              "containers":[
                 {
-                   "name":"green",
-                   "image":"danman28/flask-app-green",
+                   "name":"blue",
+                   "image":"danman28/flask-app-blue",
                    "ports":[
                       {
                          "name":"http-server",
