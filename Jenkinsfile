@@ -28,18 +28,20 @@ pipeline {
       }
     }
     stage('set current kubectl context') {
-        steps {
-          if(env.BUILD_NUMBER.mod( 2 ) == 0 ) {
+          if (env.BUILD_NUMBER.mod( 2 ) == 0 ) {
             echo 'Even'
+
+            sh '''
+            kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/EKS-2QZXVNAP
+            '''
             }else {
               echo 'Odd'
-            }
-            
+
 
               sh '''
               kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/EKS-2QZXVNAP
               '''
-        }
+            }
     }
     stage('Deploy container') {
         steps {
