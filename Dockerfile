@@ -5,7 +5,7 @@ WORKDIR /app
 # copy source code to working directory
 COPY . flask_app/hello.py /app/
 
-RUN python -m pip install --upgrade setuptools pip wheel &&\
+RUN pip install --upgrade pip &&\
     pip install --trusted-host pypi.python.org -r requirements.txt
 
 # exposed host port

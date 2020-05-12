@@ -1,7 +1,7 @@
 pipeline {
   environment {
     registryGreen = "danman28/flask-app-green"
-    registryBlue = "danman/flask-app-blue"
+    registryBlue = "danman28/flask-app-blue"
     registryCredential = 'dockerhub'
     dockerImage = ''
   }
@@ -27,9 +27,11 @@ pipeline {
       steps{
         script {
           if (env.BUILD_NUMBER.toBigInteger().mod( 2 ) == 0 ) {
+            echo 'Registry Blue'
            dockerImage = docker.build registryBlue + ":$BUILD_NUMBER"
 
           }else {
+            echo 'Registry Green'
             dockerImage = docker.build registryGreen + ":$BUILD_NUMBER"
           }
         }
