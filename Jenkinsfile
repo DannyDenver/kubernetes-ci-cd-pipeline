@@ -62,6 +62,7 @@ pipeline {
 
     stage('Deploy replication controllers') {
       steps {
+        script {
           if (env.BUILD_NUMBER.toBigInteger() > 1) {
             sh '''
               kubectl apply -f ./blue/blue-controller.json
@@ -72,6 +73,7 @@ pipeline {
               kubectl apply -f ./blue/blue-controller.json
               '''
             }
+        }
       }
     }
      
