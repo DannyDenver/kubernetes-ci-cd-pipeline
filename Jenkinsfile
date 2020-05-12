@@ -29,15 +29,24 @@ pipeline {
     }
     stage('set current kubectl context') {
         steps {
-            withAWS(region:'us-east-2', credentials: 'aws-access') {
-                sh 'kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/EKS-2QZXVNAP'
+          if(env.BUILD_NUMBER.mod( 2 ) == 0 ) {
+            echo 'Even'
+            }else {
+              echo 'Odd'
             }
+            
+
+              sh '''
+              kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/EKS-2QZXVNAP
+              '''
         }
     }
     stage('Deploy container') {
         steps {
             withAWS(region:'us-east-2', credentials: 'aws-access') {
-                sh 'kubectl apply -f ./new-image-controller.json'
+                sh '''
+                kubectl apply -f ./new-image-controller.json
+                '''
             }
         }
     }
