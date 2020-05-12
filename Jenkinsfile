@@ -52,7 +52,6 @@ pipeline {
           sh "kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/EKS-64N10C7B"
         }
       }
-    }
 
     stage('Deploy replication controllers') {
       steps {
@@ -78,4 +77,5 @@ pipeline {
         sh "docker rmi $registry:$BUILD_NUMBER" 
       }
     }
+  }
 }
