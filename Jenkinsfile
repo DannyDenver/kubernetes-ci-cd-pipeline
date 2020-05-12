@@ -35,8 +35,10 @@ pipeline {
         }
     }
     stage('Deploy container') {
-        withAWS(region:'us-east-2', credentials: 'aws-access') {
-            sh 'kubectl apply -f ./new-image-controller.json'
+        steps {
+            withAWS(region:'us-east-2', credentials: 'aws-access') {
+                sh 'kubectl apply -f ./new-image-controller.json'
+            }
         }
     }
 
