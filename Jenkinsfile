@@ -49,10 +49,7 @@ pipeline {
     }
     stage('set current kubectl context') {
       steps {
-        withAWS(region: 'us-east-2', credentials: 'aws-access') {
-          sh '''
-          kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/EKS-64N10C7B
-          '''
+          sh("kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/EKS-64N10C7B")
         }
       }
     }
@@ -61,14 +58,10 @@ pipeline {
       steps {
         script {
           if (env.BUILD_NUMBER.toBigInteger() > 1) {
-            sh '''
-              kubectl apply -f ./blue/blue-controller.json
-              kubectl apply -f ./green/green-controller.json
-              '''
-            }else {
-            sh '''
-              kubectl apply -f ./blue/blue-controller.json
-              '''
+            sh("kubectl apply -f ./blue/blue-controller.json")
+            sh("kubectl apply -f ./green/green-controller.json") 
+          }else {
+            sh("kubectl apply -f ./blue/blue-controller.json")
             }
         }
       }
@@ -76,10 +69,8 @@ pipeline {
      
     stage('Deploy load balancer servixe') {
       steps {
-        sh '''
-        kubectl apply -f ./blue-green-service.json
-        '''
-      }
+        sh("kubectl apply -f ./blue-green-service.json")
+        }
     }
 
     stage('Remove Unused docker image') {
