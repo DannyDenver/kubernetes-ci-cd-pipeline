@@ -7,11 +7,6 @@ pipeline {
   }
   agent any
   stages {
-    stage('Cloning Git') {
-      steps {
-        git 'https://github.com/DannyDenver/kubernetes-ci-cd-pipeline'
-      }
-    }
     stage('is build even') {
       steps {
         script {
@@ -54,10 +49,8 @@ pipeline {
     }
     stage('set current kubectl context') {
       steps {
-        script {
-             sh '''
-              kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/EKS-64N10C7B
-              '''
+        withAWS(region: 'us-east-2', credentials: 'aws-access') {
+          kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/EKS-64N10C7B
         }
       }
     }
