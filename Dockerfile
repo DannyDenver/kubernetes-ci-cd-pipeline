@@ -6,7 +6,7 @@ WORKDIR /app
 COPY . flask_app/hello.py /app/
 
 RUN pip install --upgrade pip &&\
-    pip install --index-url=http://pypi.python.org/simple/ --trusted-host pypi.python.org -r requirements.txt
+    pip install -r requirements.txt
 
 # exposed host port
 EXPOSE 80
