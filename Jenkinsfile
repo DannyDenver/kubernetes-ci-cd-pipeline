@@ -11,6 +11,26 @@ pipeline {
         git 'https://github.com/DannyDenver/kubernetes-ci-cd-pipeline'
       }
     }
+    stage('is build even') {
+      steps {
+        script {
+          if (env.BUILD_NUMBER.toBigInteger().mod( 2 ) == 0 ) {
+            echo 'Even'
+
+            // sh '''
+            // kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/EKS-2QZXVNAP
+            // '''
+            }else {
+              echo 'Odd'
+
+
+              // sh '''
+              // kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/EKS-2QZXVNAP
+              // '''
+            }
+        }
+      }
+    }
     stage('Building image') {
       steps{
         script {
