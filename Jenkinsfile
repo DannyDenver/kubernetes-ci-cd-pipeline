@@ -21,7 +21,7 @@ pipeline {
     stage("add AWS config") {
       steps {
         withAWS(region: 'us-east-2', credentials: 'aws-access') {
-          sh 'aws eks update-kubeconfig --name arn:aws:eks:us-east-2:204204951085:cluster/EKS-64N10C7B'
+          sh 'aws eks --region us-east-2 update-kubeconfig --name EKS-64N10C7B'
         }
       }
     }
