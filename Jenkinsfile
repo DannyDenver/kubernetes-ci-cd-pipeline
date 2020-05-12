@@ -50,7 +50,7 @@ pipeline {
     stage('set current kubectl context') {
       steps {
         withAWS(region: 'us-east-2', credentials: 'aws-access') {
-          kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/EKS-64N10C7B
+          kubectl config use-context 'arn:aws:eks:us-east-2:204204951085:cluster/EKS-64N10C7B'
         }
       }
     }
