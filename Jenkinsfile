@@ -35,7 +35,9 @@ pipeline {
         }
     }
     stage('Deploy container') {
-        kubectl apply -f ./new-image-controller.json
+        withAWS(region:'us-east-2', credentials: 'aws-access') {
+            sh 'kubectl apply -f ./new-image-controller.json'
+        }
     }
 
     stage('Remove Unused docker image') {
