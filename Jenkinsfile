@@ -19,11 +19,10 @@ pipeline {
       }
     }
     stage('set current kubectl context') {
-      steps {
+      withKubeConfig([credentialsId:'aws-access', serverUrl: 'https://82D12D883D943434CDF0E89E76162E1A.gr7.us-east-2.eks.amazonaws.com']) {
           sh "kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/EKS-64N10C7B"
         }
       }
-
 
     stage('Building image') {
       steps{
@@ -54,6 +53,14 @@ pipeline {
         }
       }
     }
+    stage('Deploy to k8s') {
+      steps {
+        sh "chmod +x changeTag.sh"
+        sh "./changeTag.sh ${env.BUILD_NUMBER}"
+      }
+    }
+
+
     stage('Deploy replication controllers') {
       steps {
         script {
