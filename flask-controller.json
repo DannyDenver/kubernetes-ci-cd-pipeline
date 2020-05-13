@@ -2,27 +2,27 @@
     "kind":"ReplicationController",
     "apiVersion":"v1",
     "metadata":{
-       "name":"blue",
+       "name":"guestbook",
        "labels":{
-          "app":"blue"
+          "app":"guestbook"
        }
     },
     "spec":{
-       "replicas":1,
+       "replicas":3,
        "selector":{
-          "app":"blue"
+          "app":"guestbook"
        },
        "template":{
           "metadata":{
              "labels":{
-                "app":"blue"
+                "app":"guestbook"
              }
           },
           "spec":{
              "containers":[
                 {
-                   "name":"blue",
-                   "image":"danman28/flask-app-green:latest",
+                   "name":"guestbook",
+                   "image":"k8s.gcr.io/guestbook:v3",
                    "ports":[
                       {
                          "name":"http-server",
