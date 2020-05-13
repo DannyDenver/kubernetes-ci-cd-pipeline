@@ -25,13 +25,13 @@ pipeline {
         }
       }
     }
-    stage('set current kubectl context') {
-      steps {
-        container('kubectl') {
-              sh "kubectl config use-context EKS-64N10C7B"
-            }
-      }
-    }
+    // stage('set current kubectl context') {
+    //   steps {
+    //     container('kubectl') {
+    //           sh "kubectl config use-context EKS-64N10C7B"
+    //         }
+    //   }
+    // }
 
     stage('Building image') {
       steps{
@@ -62,14 +62,6 @@ pipeline {
         }
       }
     }
-    stage('Deploy to k8s') {
-      steps {
-        sh "chmod +x changeTag.sh"
-        sh "./changeTag.sh ${env.BUILD_NUMBER}"
-      }
-    }
-
-
     stage('Deploy replication controllers') {
       steps {
         script {
@@ -83,6 +75,16 @@ pipeline {
       }
     }
      
+
+    stage('Deploy to k8s') {
+      steps {
+        sh "chmod +x changeTag.sh"
+        sh "./changeTag.sh ${env.BUILD_NUMBER}"
+      }
+    }
+
+
+
     stage('Deploy load balancer servixe') {
       steps {
         sh "kubectl apply -f ./blue-green-service.json"
