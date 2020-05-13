@@ -3,6 +3,12 @@ kind: Deployment
 metadata:
   name: site-deployment
 spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   selector:
     matchLabels:
       app: site-deployment
@@ -15,5 +21,13 @@ spec:
       containers:
         - name: site-deployment
           image: danman28/howdy-site
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
