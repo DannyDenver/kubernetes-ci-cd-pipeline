@@ -1,6 +1,6 @@
 pipeline {
   environment {
-    registry = "danman28/howdy-site:latest"
+    registry = "danman28/howdy-site"
     registryCredential = 'dockerhub'
     dockerImage = ''
   }
@@ -11,7 +11,7 @@ pipeline {
       steps{
         script {
             echo 'Registry Green'
-            dockerImage = docker.build(registry)
+            dockerImage = docker.build registry + ":$BUILD_NUMBER"
         }
       }
     }
@@ -20,7 +20,7 @@ pipeline {
         script {
             docker.withRegistry( '', registryCredential ) {
               dockerImage.push()
-              sh "docker rmi danman28/howdy-site:latest" 
+              sh "docker rmi danman28/howdy-site:" + "$BUILD_NUMBER"
           }
         }
       }
@@ -38,10 +38,10 @@ pipeline {
             withAWS(region: 'us-east-2', credentials: 'aws-access') {
               sh 'kubectl config view'
               sh 'kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/kubernetes-cluster'
-              sh 'kubectl apply -f flask-deployment.yaml'
-              sleep(time:20,unit:"SECONDS")
-              sh 'kubectl apply -f flask-service.json'
-              // sh 'kubectl set image deployments/flask-app flask-app=danman28/howdy-site:latest'
+              // sh 'kubectl apply -f flask-deployment.yaml'
+              // sleep(time:20,unit:"SECONDS")
+              // sh 'kubectl apply -f flask-service.json'
+               sh 'kubectl set image deployments/flask-app flask-app=danman28/howdy-site' + ":$BUILD_NUMBER"
               sh 'kubectl get services -o wide'
               }
             } 
