@@ -44,7 +44,7 @@ pipeline {
                 sh 'kubectl get services -o wide'
               }
           }  
-        }else {
+        } else {
             stage("setup load balancer and deployment") {
               withAWS(region: 'us-east-2', credentials: 'aws-access') {
               sh 'kubectl config view'
