@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: flask-app
-          image: docker.io/danman28/flask-app-green:latest
+          image: docker.io/danman28/howdy-site:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 80
