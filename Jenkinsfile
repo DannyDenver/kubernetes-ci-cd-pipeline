@@ -25,23 +25,14 @@ pipeline {
         }
       }
     }
-    // stage("add AWS config") {
-    //   steps {
-    //     withAWS(region: 'us-east-2', credentials: 'aws-access') {
-    //       sh 'aws eks --region us-east-2 update-kubeconfig --name kubernetes-cluster'
-    //     }
-    //   }
-    // }
-
     stage('Deploy deployment and load balancer') {
       steps {
             withAWS(region: 'us-east-2', credentials: 'aws-access') {
               sh 'kubectl config view'
               sh 'kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/kubernetes-cluster'
-              // sh 'kubectl apply -f flask-deployment.yaml'
-              // sleep(time:20,unit:"SECONDS")
-              // sh 'kubectl apply -f flask-service.json'
-               sh 'kubectl set image deployments/flask-app flask-app=danman28/howdy-site' + ":$BUILD_NUMBER"
+              sh 'kubectl apply -f flask-deployment.yaml'
+              sh 'kubectl apply -f flask-service.json'
+              sh 'kubectl set image deployments/flask-app flask-app=danman28/howdy-site' + ":$BUILD_NUMBER"
               sh 'kubectl get services -o wide'
               }
             } 
