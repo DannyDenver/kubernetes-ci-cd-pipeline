@@ -2,9 +2,9 @@
     "kind":"Service",
     "apiVersion":"v1",
     "metadata":{
-      "name":"flask",
+      "name":"hello",
       "labels":{
-        "app":"flask"
+        "app":"hello"
       }
     },
     "spec":{
@@ -15,7 +15,7 @@
         }
       ],
       "selector":{
-        "app":"flask-app"
+        "app":"hello-world"
       },
       "type": "LoadBalancer"
     }

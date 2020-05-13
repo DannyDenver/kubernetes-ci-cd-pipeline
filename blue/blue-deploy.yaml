@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: flask-app
+  name: hello-world
 spec:
   selector:
     matchLabels:
-      app: flask-app
+      app: hello-world
   minReadySeconds: 5
   template:
     metadata:
       labels:
-        app: flask-app
+        app: hello-world
     spec:
       containers:
-        - name: flask-app
-          image: danman28/flask-app-blue:latest
+        - name: hello-world
+          image: hello-world
           ports:
             - containerPort: 80
