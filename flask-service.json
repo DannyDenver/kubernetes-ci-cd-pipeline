@@ -2,9 +2,9 @@
     "kind":"Service",
     "apiVersion":"v1",
     "metadata":{
-       "name":"guestbook",
+       "name":"howdy-site",
        "labels":{
-          "app":"guestbook"
+          "app":"howdy-site"
        }
     },
     "spec":{
@@ -15,7 +15,7 @@
           }
        ],
        "selector":{
-          "app":"flask-app"
+          "app":"site-deployment"
        },
        "type": "LoadBalancer"
     }

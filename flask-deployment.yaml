@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: flask-app
+  name: site-deployment
 spec:
   selector:
     matchLabels:
-      app: flask-app
+      app: site-deployment
   minReadySeconds: 5
   template:
     metadata:
       labels:
-        app: flask-app
+        app: site-deployment
     spec:
       containers:
-        - name: flask-app
+        - name: site-deployment
           image: danman28/howdy-site
           ports:
             - containerPort: 80
