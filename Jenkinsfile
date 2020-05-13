@@ -28,8 +28,8 @@ pipeline {
     stage('set current kubectl context') {
       steps {
         withAWS(region: 'us-east-2', credentials: 'aws-access') {
-              bash 'kubectl config view'
-              bash 'kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/EKS-Z3D1VAVG'
+              sh 'kubectl config view'
+              sh 'kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/EKS-Z3D1VAVG'
             }
       }
     }
