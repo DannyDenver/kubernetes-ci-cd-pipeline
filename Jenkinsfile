@@ -7,15 +7,6 @@ pipeline {
   }
   agent any
   stages {
-    stage("download kubectl") {
-      steps {
-        script {
-              sh 'curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl'
-  sh 'chmod +x ./kubectl && mv kubectl /usr/local/sbin'
-        }
-      }
-    }
-
     stage('is build even') {
       steps {
         script {
@@ -27,6 +18,13 @@ pipeline {
         }
       }
     }
+    stage('set current kubectl context') {
+      steps {
+        container('kubectl') {
+              sh "kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/EKS-64N10C7B"
+            }
+      }
+    }
     stage("add AWS config") {
       steps {
         withAWS(region: 'us-east-2', credentials: 'aws-access') {
@@ -35,13 +33,7 @@ pipeline {
       }
     }
 
-    stage('set current kubectl context') {
-      steps {
-        container('kubectl') {
-              sh "kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/EKS-64N10C7B"
-            }
-      }
-    }
+
 
     stage('Building image') {
       steps{
