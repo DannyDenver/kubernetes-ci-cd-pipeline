@@ -1,0 +1,22 @@
+{
+    "kind":"Service",
+    "apiVersion":"v1",
+    "metadata":{
+      "name":"flask",
+      "labels":{
+        "app":"flask"
+      }
+    },
+    "spec":{
+      "ports": [
+        {
+          "port":8000,
+          "targetPort":80
+        }
+      ],
+      "selector":{
+        "app":"flask-app"
+      },
+      "type": "LoadBalancer"
+    }
+  }

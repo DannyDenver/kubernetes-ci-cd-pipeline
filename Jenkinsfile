@@ -31,11 +31,11 @@ pipeline {
         script {
           if (env.BUILD_NUMBER.toBigInteger().mod( 2 ) == 0 ) {
             echo 'Registry Blue'
-           dockerImage = docker.build registryBlue + ":$BUILD_NUMBER"
+           dockerImage = docker.build registryBlue + ":latest"
 
           }else {
             echo 'Registry Green'
-            dockerImage = docker.build registryGreen + ":$BUILD_NUMBER"
+            dockerImage = docker.build registryGreen + ":latest"
           }
         }
       }
@@ -66,17 +66,20 @@ pipeline {
     stage('Deploy replication controllers') {
       steps {
         withAWS(region: 'us-east-2', credentials: 'aws-access') {
-          script {
-            if (env.BUILD_NUMBER.toBigInteger() > 1) {
-              sh "kubectl apply -f blue/blue-controller.json" 
-              sh "kubectl apply -f green/green-controller.json"
-            }else {
-              sh "kubectl apply -f blue/blue-controller.json" 
-              }
-          }
+          // script {
+          //   if (env.BUILD_NUMBER.toBigInteger() > 1) {
+          //     sh "kubectl apply -f blue/blue-controller.json" 
+          //     sh "kubectl apply -f green/green-controller.json"
+          //   }else {
+          //     sh "kubectl apply -f blue/blue-controller.json" 
+          //     }
+          // }
+          sh 'kubectl apply -f blue/blue-deploy.yaml'
+          sleep(time:20,unit:"SECONDS")
+          sh 'kubectl apply -f blue/blue-service.json'
 
 
-         sh "kubectl apply -f blue-green-service.json"
+        //  sh "kubectl apply -f blue-green-service.json"
         }
       }
     }

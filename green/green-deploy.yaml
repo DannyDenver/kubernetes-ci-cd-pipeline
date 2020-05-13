@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-app-production
+spec:
+  selector:
+    matchLabels:
+      app: green-flask-app
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: green-flask-app
+    spec:
+      containers:
+        - name: green-flask-app
+          image: danman28/flask-app-blue:latest
+          ports:
+            - containerPort: 80
