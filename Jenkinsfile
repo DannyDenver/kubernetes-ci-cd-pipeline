@@ -20,6 +20,7 @@ pipeline {
         script {
             docker.withRegistry( '', registryCredential ) {
               dockerImage.push()
+              sh "docker rmi danman28/howdy-site:latest" 
           }
         }
       }
@@ -38,16 +39,12 @@ pipeline {
               sh 'kubectl config view'
               sh 'kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/kubernetes-cluster'
               sh 'kubectl apply -f flask-deployment.yaml'
+              sleep(time:20,unit:"SECONDS")
               sh 'kubectl apply -f flask-service.json'
-              sh 'kubectl set image deployments/flask-app flask-app=danman28/howdy-site:latest'
+              // sh 'kubectl set image deployments/flask-app flask-app=danman28/howdy-site:latest'
               sh 'kubectl get services -o wide'
               }
             } 
           }
-    stage('Remove Unused docker image') {
-      steps{
-        sh "docker rmi danman28/howdy-site:latest" 
-      }
-    }
   }
 }
