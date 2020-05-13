@@ -24,13 +24,13 @@ pipeline {
         }
       }
     }
-    stage("add AWS config") {
-      steps {
-        withAWS(region: 'us-east-2', credentials: 'aws-access') {
-          sh 'aws eks --region us-east-2 update-kubeconfig --name kubernetes-cluster'
-        }
-      }
-    }
+    // stage("add AWS config") {
+    //   steps {
+    //     withAWS(region: 'us-east-2', credentials: 'aws-access') {
+    //       sh 'aws eks --region us-east-2 update-kubeconfig --name kubernetes-cluster'
+    //     }
+    //   }
+    // }
 
     stage('Deploy replication controllers') {
       steps {
