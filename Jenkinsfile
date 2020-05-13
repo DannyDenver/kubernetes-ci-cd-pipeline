@@ -27,10 +27,8 @@ pipeline {
     }
     stage('set current kubectl context') {
       steps {
-        container('kubectl') {
               sh "kubectl config use-context EKS-Z3D1VAVG"
             }
-      }
     }
 
     stage('Building image') {
