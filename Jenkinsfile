@@ -37,7 +37,6 @@ pipeline {
           sh 'kubectl config view'
           sh 'kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/kubernetes-cluster'
 
-        script {
             if (env.BUILD_NUMBER.toBigInteger() > 1 ) {
               sh 'kubectl set image deployments/flask-app flask-app=danman28:flask-app-green:latest'
             }else {
@@ -48,7 +47,6 @@ pipeline {
             sh 'kubectl get services -o wide'
           } 
         }
-      }
     }
     stage('Remove Unused docker image') {
       steps{
