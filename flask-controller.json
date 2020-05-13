@@ -22,7 +22,7 @@
              "containers":[
                 {
                    "name":"guestbook",
-                   "image":"danman28/flask-app-green:latest",
+                   "image":"docker.io/danman28/flask-app-green:latest",
                    "ports":[
                       {
                          "name":"http-server",
