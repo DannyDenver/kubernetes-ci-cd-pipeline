@@ -25,5 +25,24 @@ Credentials for Github, AWS and Dockerhub were needed to create the pipeline.
 
 Plugins Installed: BlueOcean, Github plugin, Kubernetes CLI Plugin, Pipeline: AWS Steps
 
+
+### EKS Cluster
+
+Cluster was created using the eksctl command:
+```
+	eksctl create cluster \
+		--name kubernetes-cluster \
+		--region us-east-2 \
+		--nodegroup-name node-workers \
+		--node-type t2.micro \
+		--nodes 3 \
+		--nodes-min 2 \
+		--nodes-max 4 \
+		--managed
+```
+
+A cluster can also following instructions from the AWS EKS Architecture quickstart guide: https://s3.amazonaws.com/aws-quickstart/quickstart-amazon-eks/doc/amazon-eks-architecture.pdf
+
+
 Site, if still up:
 http://a74f27ee05cc241cfa14a07d1c3b3558-1313406416.us-east-2.elb.amazonaws.com:3000/
