@@ -26,35 +26,35 @@ pipeline {
       }
     }
 
-    stage('Build Image') {
-      steps{
-        script {
-          if (env.BUILD_NUMBER.toBigInteger().mod( 2 ) == 0 ) {
-            echo 'Registry Blue'
-           dockerImage = docker.build registryBlue + ":latest"
+    // stage('Build Image') {
+    //   steps{
+    //     script {
+    //       if (env.BUILD_NUMBER.toBigInteger().mod( 2 ) == 0 ) {
+    //         echo 'Registry Blue'
+    //        dockerImage = docker.build registryBlue + ":latest"
 
-          }else {
-            echo 'Registry Green'
-            dockerImage = docker.build registryGreen + ":latest"
-          }
-        }
-      }
-    }
-    stage('Push Image') {
-      steps{
-        script {
-          if (env.BUILD_NUMBER.toBigInteger().mod( 2 ) == 0 ) {
-            docker.withRegistry( '', registryCredential ) {
-              dockerImage.push()
-            }
-          }else {
-            docker.withRegistry( '', registryCredential ) {
-              dockerImage.push()
-            }
-          }
-        }
-      }
-    }
+    //       }else {
+    //         echo 'Registry Green'
+    //         dockerImage = docker.build registryGreen + ":latest"
+    //       }
+    //     }
+    //   }
+    // }
+    // stage('Push Image') {
+    //   steps{
+    //     script {
+    //       if (env.BUILD_NUMBER.toBigInteger().mod( 2 ) == 0 ) {
+    //         docker.withRegistry( '', registryCredential ) {
+    //           dockerImage.push()
+    //         }
+    //       }else {
+    //         docker.withRegistry( '', registryCredential ) {
+    //           dockerImage.push()
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
     stage('set current kubectl context') {
       steps {
         withAWS(region: 'us-east-2', credentials: 'aws-access') {
@@ -66,20 +66,19 @@ pipeline {
     stage('Deploy replication controllers') {
       steps {
         withAWS(region: 'us-east-2', credentials: 'aws-access') {
-          // script {
-          //   if (env.BUILD_NUMBER.toBigInteger() > 1) {
-          //     sh "kubectl apply -f blue/blue-controller.json" 
-          //     sh "kubectl apply -f green/green-controller.json"
-          //   }else {
-          //     sh "kubectl apply -f blue/blue-controller.json" 
-          //     }
-          // }
-          sh 'kubectl apply -f blue/blue-controller.json'
-          sleep(time:20,unit:"SECONDS")
-          sh 'kubectl apply -f blue-green-service.json'
-          sh 'kubectl get services -o wide'
 
-        //  sh "kubectl apply -f blue-green-service.json"
+          // sh 'kubectl apply -f blue/blue-controller.json'
+          // sleep(time:20,unit:"SECONDS")
+          // sh 'kubectl apply -f blue-green-service.json'
+          // sh 'kubectl get services -o wide'
+
+          sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/examples/master/guestbook-go/redis-master-controller.json'
+          sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/examples/master/guestbook-go/redis-master-service.json'
+          sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/examples/master/guestbook-go/redis-slave-controller.json'
+          sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/examples/master/guestbook-go/redis-slave-service.json'
+          sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/examples/master/guestbook-go/guestbook-controller.json'
+          sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/examples/master/guestbook-go/guestbook-service.json'
+          sh 'kubectl get services -o wide'
         }
       }
     }
