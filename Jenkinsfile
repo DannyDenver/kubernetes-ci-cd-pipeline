@@ -62,6 +62,7 @@ pipeline {
           sh 'kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/kubernetes-cluster'
           sh 'kubectl apply -f flask-controller.json'
           sh 'kubectl apply -f flask-service.json'
+          sh 'kubectl create service nodeport hello-world --tcp=80:80'
 
           // sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/examples/master/guestbook-go/redis-master-controller.json'
           // sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/examples/master/guestbook-go/redis-master-service.json'

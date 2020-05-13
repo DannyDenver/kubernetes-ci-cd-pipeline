@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: hello-world
-          image: hello-world
+          image: danman28/flask-app-green:latest
           ports:
             - containerPort: 80
