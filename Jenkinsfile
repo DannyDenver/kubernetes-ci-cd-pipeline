@@ -27,8 +27,10 @@ pipeline {
     }
     stage('set current kubectl context') {
       steps {
-              sh "kubectl config use-context EKS-Z3D1VAVG"
+        container('kubectl') {
+              sh "kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/EKS-Z3D1VAVG"
             }
+      }
     }
 
     stage('Building image') {
