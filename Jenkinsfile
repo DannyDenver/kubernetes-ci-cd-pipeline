@@ -1,6 +1,6 @@
 pipeline {
   environment {
-    registry = "danman28/howdy-site"
+    registry = "danman28/howdy-site:latest"
     registryCredential = 'dockerhub'
     dockerImage = ''
   }
@@ -11,7 +11,7 @@ pipeline {
       steps{
         script {
             echo 'Registry Green'
-            dockerImage = docker.build registry + ":latest"
+            dockerImage = docker.build registry
         }
       }
     }
@@ -46,7 +46,7 @@ pipeline {
           }
     stage('Remove Unused docker image') {
       steps{
-        sh "docker rmi $registry:$BUILD_NUMBER" 
+        sh "docker rmi $registry:latest" 
       }
     }
   }
