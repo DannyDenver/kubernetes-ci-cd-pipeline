@@ -21,17 +21,17 @@ pipeline {
     stage("add AWS config") {
       steps {
         withAWS(region: 'us-east-2', credentials: 'aws-access') {
-          sh 'aws eks --region us-east-2 update-kubeconfig --name EKS-64N10C7B'
+          sh 'aws eks --region us-east-2 update-kubeconfig --name EKS-Z3D1VAVG'
         }
       }
     }
-    // stage('set current kubectl context') {
-    //   steps {
-    //     container('kubectl') {
-    //           sh "kubectl config use-context EKS-64N10C7B"
-    //         }
-    //   }
-    // }
+    stage('set current kubectl context') {
+      steps {
+        container('kubectl') {
+              sh "kubectl config use-context EKS-Z3D1VAVG"
+            }
+      }
+    }
 
     stage('Building image') {
       steps{
