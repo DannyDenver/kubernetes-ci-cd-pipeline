@@ -19,7 +19,7 @@ spec:
         app: site-deployment
     spec:
       containers:
-        - name: site-deployment
+        - name: site-image
           image: danman28/howdy-site
           imagePullPolicy: Always
           ports:

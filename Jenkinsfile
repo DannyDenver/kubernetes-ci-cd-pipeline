@@ -38,7 +38,7 @@ pipeline {
             withAWS(region: 'us-east-2', credentials: 'aws-access') {
               sh 'kubectl apply -f flask-deployment.yaml'
               sh 'kubectl apply -f flask-service.json'
-              sh 'kubectl set image deployments/flask-app site-deployment=danman28/howdy-site' + ":$BUILD_NUMBER"
+              sh 'kubectl set image deployments/site-deployment site-image=danman28/howdy-site' + ":$BUILD_NUMBER"
               sh 'kubectl get services -o wide'
               }
             } 
