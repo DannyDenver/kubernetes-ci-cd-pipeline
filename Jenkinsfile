@@ -66,12 +66,15 @@ pipeline {
     stage('Deploy replication controllers') {
       steps {
         withAWS(region: 'us-east-2', credentials: 'aws-access') {
-          if (env.BUILD_NUMBER.toBigInteger() > 1) {
-            sh "kubectl apply -f blue/blue-controller.json" 
-            sh "kubectl apply -f green/green-controller.json"
-          }else {
-            sh "kubectl apply -f blue/blue-controller.json" 
-            }
+          script {
+            if (env.BUILD_NUMBER.toBigInteger() > 1) {
+              sh "kubectl apply -f blue/blue-controller.json" 
+              sh "kubectl apply -f green/green-controller.json"
+            }else {
+              sh "kubectl apply -f blue/blue-controller.json" 
+              }
+          }
+
 
          sh "kubectl apply -f blue-green-service.json"
         }
