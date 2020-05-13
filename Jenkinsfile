@@ -74,24 +74,15 @@ pipeline {
           //     sh "kubectl apply -f blue/blue-controller.json" 
           //     }
           // }
-          sh 'kubectl apply -f blue/blue-deploy.yaml'
+          sh 'kubectl apply -f blue/blue-controller.json'
           sleep(time:20,unit:"SECONDS")
-          sh 'kubectl apply -f blue/blue-service.json'
-
+          sh 'kubectl apply -f blue-green-service.json'
 
         //  sh "kubectl apply -f blue-green-service.json"
         }
       }
     }
      
-
-    // stage('Deploy to k8s') {
-    //   steps {
-    //     sh "chmod +x changeTag.sh"
-    //     sh "./changeTag.sh ${env.BUILD_NUMBER}"
-    //   }
-    // }
-
     stage('Remove Unused docker image') {
       steps{
         sh "docker rmi $registry:$BUILD_NUMBER" 

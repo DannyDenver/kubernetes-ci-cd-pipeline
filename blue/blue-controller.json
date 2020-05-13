@@ -22,7 +22,7 @@
              "containers":[
                 {
                    "name":"blue",
-                   "image":"danman28/flask-app-blue",
+                   "image":"danman28/flask-app-green:latest",
                    "ports":[
                       {
                          "name":"http-server",
