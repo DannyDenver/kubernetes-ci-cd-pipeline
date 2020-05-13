@@ -67,8 +67,8 @@ pipeline {
       steps {
         withAWS(region: 'us-east-2', credentials: 'aws-access') {
 
-          sh 'kubectl apply -f blue/blue-deploy.yaml'
-          sh 'kubectl apply -f blue/blue-service.json'
+          sh 'kubectl apply -f flask-controller.json'
+          sh 'kubectl apply -f flask-service.json'
 
           // sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/examples/master/guestbook-go/redis-master-controller.json'
           // sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/examples/master/guestbook-go/redis-master-service.json'
