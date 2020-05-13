@@ -39,7 +39,7 @@ pipeline {
               sh 'kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/kubernetes-cluster'
               sh 'kubectl apply -f flask-deployment.yaml'
               sh 'kubectl apply -f flask-service.json'
-              sh 'kubectl set image deployments/flask-app flask-app=docker.io/danman28:howdy-site:latest'
+              sh 'kubectl set image deployments/flask-app flask-app=danman28/howdy-site:latest'
               sh 'kubectl get services -o wide'
               }
             } 
