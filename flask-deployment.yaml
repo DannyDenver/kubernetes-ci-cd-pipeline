@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ducks-test
+  name: flask-app
 spec:
   selector:
     matchLabels:
@@ -17,3 +17,4 @@ spec:
           image: danman28/flask-app-green:latest
           ports:
             - containerPort: 80
+          imagePullPolicy: Always
