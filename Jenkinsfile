@@ -77,16 +77,17 @@ pipeline {
           sh 'kubectl apply -f blue/blue-controller.json'
           sleep(time:20,unit:"SECONDS")
           sh 'kubectl apply -f blue-green-service.json'
+          sh 'kubectl get services -o wide'
 
         //  sh "kubectl apply -f blue-green-service.json"
         }
       }
     }
      
-    stage('Remove Unused docker image') {
-      steps{
-        sh "docker rmi $registry:$BUILD_NUMBER" 
-      }
-    }
+    // stage('Remove Unused docker image') {
+    //   steps{
+    //     sh "docker rmi $registry:$BUILD_NUMBER" 
+    //   }
+    // }
   }
 }
