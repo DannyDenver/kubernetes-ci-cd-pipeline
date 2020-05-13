@@ -1,15 +1,7 @@
-FROM python:latest
-
-WORKDIR /app
-
-# copy source code to working directory
-COPY . flask_app/hello.py /app/
-
-RUN pip install --upgrade pip &&\
-    pip install --trusted-host pypi.python.org -r requirements.txt
-
-# exposed host port
-EXPOSE 80
-
-# run web.py at container launch
-CMD ["python", "hello.py"]
+FROM python:3-alpine
+WORKDIR /usr/src/app
+EXPOSE 8000
+COPY requirements.txt .
+RUN pip install -qr requirements.txt
+COPY server.py .
+CMD ["python3", "./server.py"]
