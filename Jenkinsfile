@@ -18,6 +18,36 @@ pipeline {
     //     }
     //   }
     // }
+
+    stage('Build Image') {
+      steps{
+        script {
+          // if (env.BUILD_NUMBER.toBigInteger().mod( 2 ) == 0 ) {
+          //   echo 'Registry Blue'
+          //  dockerImage = docker.build registryBlue + ":latest"
+
+          // }else {
+            echo 'Registry Green'
+            dockerImage = docker.build registryGreen + ":latest"
+          //}
+        }
+      }
+    }
+    stage('Push Image') {
+      steps{
+        script {
+          if (env.BUILD_NUMBER.toBigInteger().mod( 2 ) == 0 ) {
+            docker.withRegistry( '', registryCredential ) {
+              dockerImage.push()
+            }
+          }else {
+            docker.withRegistry( '', registryCredential ) {
+              dockerImage.push()
+            }
+          }
+        }
+      }
+    }
     stage("add AWS config") {
       steps {
         withAWS(region: 'us-east-2', credentials: 'aws-access') {
@@ -25,48 +55,11 @@ pipeline {
         }
       }
     }
-
-    // stage('Build Image') {
-    //   steps{
-    //     script {
-    //       if (env.BUILD_NUMBER.toBigInteger().mod( 2 ) == 0 ) {
-    //         echo 'Registry Blue'
-    //        dockerImage = docker.build registryBlue + ":latest"
-
-    //       }else {
-    //         echo 'Registry Green'
-    //         dockerImage = docker.build registryGreen + ":latest"
-    //       }
-    //     }
-    //   }
-    // }
-    // stage('Push Image') {
-    //   steps{
-    //     script {
-    //       if (env.BUILD_NUMBER.toBigInteger().mod( 2 ) == 0 ) {
-    //         docker.withRegistry( '', registryCredential ) {
-    //           dockerImage.push()
-    //         }
-    //       }else {
-    //         docker.withRegistry( '', registryCredential ) {
-    //           dockerImage.push()
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-    stage('set current kubectl context') {
-      steps {
-        withAWS(region: 'us-east-2', credentials: 'aws-access') {
-              sh 'kubectl config view'
-              sh 'kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/kubernetes-cluster'
-            }
-      }
-    }
     stage('Deploy replication controllers') {
       steps {
         withAWS(region: 'us-east-2', credentials: 'aws-access') {
-
+          sh 'kubectl config view'
+          sh 'kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/kubernetes-cluster'
           sh 'kubectl apply -f flask-controller.json'
           sh 'kubectl apply -f flask-service.json'
 
