@@ -17,7 +17,6 @@ pipeline {
     stage('Build Image') {
       steps{
         script {
-            echo 'Registry Green'
             dockerImage = docker.build registry + ":$BUILD_NUMBER"
         }
       }

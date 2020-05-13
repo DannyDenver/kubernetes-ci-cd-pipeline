@@ -4,4 +4,5 @@ COPY ./website/index.html /usr/share/nginx/html/index.html
 COPY ./website/script.js /usr/share/nginx/html/script.js
 COPY ./website/style.css /usr/share/nginx/html/style.css
 
+asdkfj;alsdknf 
 EXPOSE 80
