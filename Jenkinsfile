@@ -18,13 +18,13 @@ pipeline {
     //     }
     //   }
     // }
-    // stage("add AWS config") {
-    //   steps {
-    //     withAWS(region: 'us-east-2', credentials: 'aws-access') {
-    //       sh 'aws eks --region us-east-2 update-kubeconfig --name EKS-Z3D1VAVG'
-    //     }
-    //   }
-    // }
+    stage("add AWS config") {
+      steps {
+        withAWS(region: 'us-east-2', credentials: 'aws-access') {
+          sh 'aws eks --region us-east-2 update-kubeconfig --name kubernetes-cluster'
+        }
+      }
+    }
 
     stage('Build Image') {
       steps{
@@ -59,7 +59,7 @@ pipeline {
       steps {
         withAWS(region: 'us-east-2', credentials: 'aws-access') {
               sh 'kubectl config view'
-              sh 'kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/EKS-Z3D1VAVG'
+              sh 'kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/kubernetes-cluster'
             }
       }
     }
