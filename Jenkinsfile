@@ -60,7 +60,7 @@ pipeline {
         withAWS(region: 'us-east-2', credentials: 'aws-access') {
           sh 'kubectl config view'
           sh 'kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/kubernetes-cluster'
-          sh 'kubectl apply -f flask-controller.json'
+          sh 'kubectl apply -f flask-deployment.yaml'
           sh 'kubectl apply -f flask-service.json'
 
           // sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/examples/master/guestbook-go/redis-master-controller.json'

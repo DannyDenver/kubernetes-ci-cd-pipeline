@@ -11,11 +11,11 @@
        "ports": [
           {
             "port":3000,
-            "targetPort":"http-server"
+            "targetPort":80
           }
        ],
        "selector":{
-          "app":"guestbook"
+          "app":"flask-app"
        },
        "type": "LoadBalancer"
     }
