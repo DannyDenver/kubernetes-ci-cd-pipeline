@@ -36,10 +36,17 @@ pipeline {
         withAWS(region: 'us-east-2', credentials: 'aws-access') {
           sh 'kubectl config view'
           sh 'kubectl config use-context arn:aws:eks:us-east-2:204204951085:cluster/kubernetes-cluster'
-          sh 'kubectl apply -f flask-deployment.yaml'
-          sh 'kubectl apply -f flask-service.json'
-          sh 'kubectl set image deployments/flask-app flask-app=danman28:flask-app-green:latest'
-          sh 'kubectl get services -o wide'
+
+        script {
+            if (env.BUILD_NUMBER.toBigInteger() > 1 ) {
+              sh 'kubectl set image deployments/flask-app flask-app=danman28:flask-app-green:latest'
+            }else {
+              sh 'kubectl apply -f flask-deployment.yaml'
+              sh 'kubectl apply -f flask-service.json'
+            }
+            
+            sh 'kubectl get services -o wide'
+          } 
         }
       }
     }
