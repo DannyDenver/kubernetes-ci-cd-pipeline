@@ -67,17 +67,15 @@ pipeline {
       steps {
         withAWS(region: 'us-east-2', credentials: 'aws-access') {
 
-          // sh 'kubectl apply -f blue/blue-controller.json'
-          // sleep(time:20,unit:"SECONDS")
-          // sh 'kubectl apply -f blue-green-service.json'
-          // sh 'kubectl get services -o wide'
+          sh 'kubectl apply -f blue/blue-controller.json'
+          sh 'kubectl apply -f blue-green-service.json'
 
-          sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/examples/master/guestbook-go/redis-master-controller.json'
-          sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/examples/master/guestbook-go/redis-master-service.json'
-          sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/examples/master/guestbook-go/redis-slave-controller.json'
-          sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/examples/master/guestbook-go/redis-slave-service.json'
-          sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/examples/master/guestbook-go/guestbook-controller.json'
-          sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/examples/master/guestbook-go/guestbook-service.json'
+          // sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/examples/master/guestbook-go/redis-master-controller.json'
+          // sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/examples/master/guestbook-go/redis-master-service.json'
+          // sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/examples/master/guestbook-go/redis-slave-controller.json'
+          // sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/examples/master/guestbook-go/redis-slave-service.json'
+          // sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/examples/master/guestbook-go/guestbook-controller.json'
+          // sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/examples/master/guestbook-go/guestbook-service.json'
           sh 'kubectl get services -o wide'
         }
       }
